@@ -1,0 +1,19 @@
+FROM node:14-buster
+
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i '/buster-updates/d' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+      ffmpeg \
+      imagemagick \
+      webp \
+      git \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN git config --global url."https://github.com/".insteadOf git://github.com/
+
+RUN npm install -g typescript@5
+
+WORKDIR /app
+
+EXPOSE 3000
